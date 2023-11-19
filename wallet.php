@@ -4,14 +4,16 @@
 header('Content-type: application/json');
 
 if (isset($_GET["publickey"]) && $_GET["publickey"] != "") {
+    $publickey = $_GET["publickey"];
+
     $conn = new mysqli($servername, $username, $password, $database);
-    $result = $conn->query("SELECT * FROM `wallets` WHERE `publickey` = '". $_GET["publickey"]. "'");
+    $result = $conn->query("SELECT * FROM `wallets` WHERE `publickey` = '$publickey'");
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $final_data = [
                 "success" => "true",
-                "public_key" => $_GET["publickey"],
+                "public_key" => $publickey,
                 "balance" => $row["balance"]
             ];
             echo json_encode($final_data);
